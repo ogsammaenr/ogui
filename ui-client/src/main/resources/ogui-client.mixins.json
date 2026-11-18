@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "me.ogsammaenr.ogui.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "GuiGraphicsExtractorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
