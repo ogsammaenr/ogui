@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "ogui-api-gametest",
+	"version": "${version}",
+	"name": "Ogui API GameTests",
+	"description": "Headless server GameTests for ogui-api protocol, anti-dupe ChestMenu, and fake-sign text input.",
+	"license": "MIT",
+	"environment": "server",
+	"entrypoints": {
+		"fabric-gametest": [
+			"me.ogsammaenr.ogui.gametest.OguiProtocolGameTests",
+			"me.ogsammaenr.ogui.gametest.OguiChestAntiDupeGameTests",
+			"me.ogsammaenr.ogui.gametest.OguiFakeSignGameTests",
+			"me.ogsammaenr.ogui.gametest.OguiArchetypeGameTests",
+			"me.ogsammaenr.ogui.gametest.OguiAssetProtocolGameTests"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*",
+		"ogui-api": "*"
+	}
+}
