@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"id": "ogui-client-gametest",
+	"version": "${version}",
+	"name": "Ogui Client GameTests",
+	"description": "Fabric Client GameTests verifying ogui-client rendering, preferences, keybindings, and end-to-end server-driven screens.",
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"fabric-client-gametest": [
+			"me.ogsammaenr.ogui.client.gametest.OguiClientGameTests"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*",
+		"ogui-api": "*",
+		"ogui-client": "*"
+	}
+}
