@@ -1,0 +1,62 @@
+base {
+	archivesName = 'ogui-client'
+}
+
+loom {
+	clientOnlyMinecraftJar()
+	mods {
+		'ogui-client' {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = 'ogui-client-gametest'
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true
+		clearRunDirectory = true
+	}
+}
+
+dependencies {
+	implementation project(':ui-api')
+	gametestImplementation sourceSets.main.output
+	gametestImplementation project(':ui-api')
+}
+
+tasks.withType(Test).configureEach {
+	systemProperty 'fabric.side', 'client'
+}
+
+def configuredClientEnv = providers.environmentVariable('OGUI_CLIENT_ENV').orNull
+def defaultClientEnvDir = new File(System.getProperty('user.home'), '.local/ogui-client-env')
+def headlessClientEnvDir = configuredClientEnv ? file(configuredClientEnv) : defaultClientEnvDir
+def hasDisplayServer = providers.environmentVariable('DISPLAY').isPresent() || providers.environmentVariable('WAYLAND_DISPLAY').isPresent()
+def hasExplicitSdlDriver = providers.environmentVariable('SDL_VIDEODRIVER').isPresent()
+def existingLdLibraryPath = providers.environmentVariable('LD_LIBRARY_PATH').orNull
+
+tasks.withType(net.fabricmc.loom.task.RunGameTask).configureEach { task ->
+	if (!hasDisplayServer) {
+		task.useXvfb.set(false)
+		task.environment('LIBGL_ALWAYS_SOFTWARE', '1')
+		task.environment('MESA_LOADER_DRIVER_OVERRIDE', 'llvmpipe')
+		task.environment('__GLX_VENDOR_LIBRARY_NAME', 'mesa')
+		task.environment('ALSOFT_DRIVERS', 'null')
+		if (!hasExplicitSdlDriver) {
+			task.environment('SDL_VIDEODRIVER', 'offscreen')
+		}
+		if (headlessClientEnvDir.isDirectory()) {
+			def prefix = headlessClientEnvDir.absolutePath
+			def libPath = "${prefix}/usr/lib/x86_64-linux-gnu:${prefix}/usr/lib"
+			task.environment('LD_LIBRARY_PATH', existingLdLibraryPath ? "${libPath}:${existingLdLibraryPath}" : libPath)
+			task.environment('LIBGL_DRIVERS_PATH', "${prefix}/usr/lib/x86_64-linux-gnu/dri")
+			task.environment('__EGL_VENDOR_LIBRARY_FILENAMES', "${prefix}/usr/share/glvnd/egl_vendor.d/50_mesa.json")
+			task.environment('VK_ICD_FILENAMES', "${prefix}/etc/lvp_icd.json")
+			task.environment('VK_DRIVER_FILES', "${prefix}/etc/lvp_icd.json")
+		}
+	}
+}

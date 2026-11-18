@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "ogui-client",
+	"version": "${version}",
+	"name": "Ogui Client",
+	"description": "Optional client-side custom Screen renderer, theme preferences, and quick-menu keybindings for ogui-api.",
+	"authors": [
+		"ogsammaenr"
+	],
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"me.ogsammaenr.ogui.client.OguiClientMod"
+		]
+	},
+	"mixins": [
+		"ogui-client.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*",
+		"ogui-api": "*"
+	}
+}
