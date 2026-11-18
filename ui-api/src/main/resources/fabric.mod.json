@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "ogui-api",
+	"version": "${version}",
+	"name": "Ogui API",
+	"description": "Server-authoritative hybrid GUI library, network protocol, anti-dupe ChestMenu fallback, and fake-sign text input.",
+	"authors": [
+		"ogsammaenr"
+	],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"me.ogsammaenr.ogui.runtime.OguiApiMod"
+		]
+	},
+	"mixins": [
+		"ogui-api.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

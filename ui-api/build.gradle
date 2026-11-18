@@ -1,0 +1,50 @@
+base {
+	archivesName = 'ogui-api'
+}
+
+loom {
+	serverOnlyMinecraftJar()
+	mods {
+		'ogui-api' {
+			sourceSet sourceSets.main
+		}
+	}
+}
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = 'ogui-api-gametest'
+		enableGameTests = true
+		enableClientGameTests = false
+		eula = true
+		clearRunDirectory = true
+	}
+}
+
+dependencies {
+	gametestImplementation sourceSets.main.output
+}
+
+tasks.withType(Test).configureEach {
+	systemProperty 'fabric.side', 'server'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'ogui-api'
+			from components.java
+		}
+	}
+	repositories {
+		maven {
+			name = 'workspaceM2'
+			url = layout.buildDirectory.dir('m2')
+		}
+	}
+}
+
+tasks.named('publishToMavenLocal') {
+	finalizedBy 'publishMavenJavaPublicationToWorkspaceM2Repository'
+}
